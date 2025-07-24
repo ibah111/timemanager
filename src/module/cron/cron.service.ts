@@ -1,7 +1,8 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Cron, CronExpression } from '@nestjs/schedule';
+import { Cron } from '@nestjs/schedule';
 import { TimemanService } from '../../pages/timeman/timeman.service';
 import { webhooks } from 'src/utils/consts';
+import { CustomCronExpression } from 'src/utils/cron.config';
 
 @Injectable()
 export class CronService {
@@ -9,7 +10,7 @@ export class CronService {
 
   constructor(private readonly timemanService: TimemanService) {}
 
-  @Cron(CronExpression.EVERY_DAY_AT_9AM)
+  @Cron(CustomCronExpression.OPEN_DAY)
   async openDayAutomatically(): Promise<void> {
     this.logger.log('Запуск автоматического открытия дня в 9:00');
     webhooks.open.forEach(async (webhook) => {
@@ -17,7 +18,7 @@ export class CronService {
     });
   }
 
-  @Cron(CronExpression.EVERY_DAY_AT_6PM)
+  @Cron(CustomCronExpression.CLOSE_DAY)
   async closeDayAutomatically(): Promise<void> {
     this.logger.log('Запуск автоматического закрытия дня в 18:00');
     webhooks.close.forEach(async (webhook) => {
