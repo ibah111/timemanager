@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import { TimemanService } from '../timeman/timeman.service';
+import { TimemanService } from '../../pages/timeman/timeman.service';
 import { webhooks } from 'src/utils/consts';
 
 @Injectable()
