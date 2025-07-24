@@ -6,7 +6,7 @@ export function getSwaggerOptions() {
 }
 export function getSwaggerOptionsCustom() {
   const options: SwaggerCustomOptions = {};
-  options.customSiteTitle = 'Send-App';
+  options.customSiteTitle = 'Timemanager-application';
   options.validatorUrl = '';
   return options;
 }

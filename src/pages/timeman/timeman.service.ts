@@ -3,48 +3,46 @@ import {
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { errMessage } from 'src/utils/errorMessage';
+import { ApiResponse } from 'src/utils/interfaces';
 
 @Injectable()
 export class TimemanService {
   private readonly service_name: string = TimemanService.name;
   private readonly logger: Logger = new Logger(this.service_name);
 
-  private readonly requestInstance = axios.create({
-    baseURL: 'https://chat.nbkfinance.ru/',
-  });
-
-  private readonly webhooks = {
-    open: 'https://chat.nbkfinance.ru/rest/4018/j4oy8n3fv3o9wfnb/timeman.open.json',
-    close:
-      'https://chat.nbkfinance.ru/rest/4018/63t8z12mq3o8hg16/timeman.close.json',
-  };
-
-  async open(): Promise<AxiosResponse> {
+  async open(webhook: string): Promise<ApiResponse> {
     this.logger.debug('Starting day');
     try {
-      return await axios.post(this.webhooks.open);
+      const response = await axios.post(webhook);
+      return {
+        success: true,
+        data: response.data,
+        status: response.status,
+        message: 'Day started successfully',
+      };
     } catch (error) {
       throw new InternalServerErrorException(
         errMessage(error, this.service_name),
       );
     }
-
-    //const request = this.requestInstance.post('timeman.open');
-    //return request;
   }
 
-  async close(): Promise<AxiosResponse> {
+  async close(webhook: string): Promise<ApiResponse> {
     this.logger.debug('Closing day');
     try {
-      return await axios.post(this.webhooks.close);
+      const response = await axios.post(webhook);
+      return {
+        success: true,
+        data: response.data,
+        status: response.status,
+        message: 'Day closed successfully',
+      };
     } catch (error) {
       throw new InternalServerErrorException(
         errMessage(error, this.service_name),
       );
     }
-    //const request = this.requestInstance.post('timeman.close');
-    //return request;
   }
 }

@@ -11,14 +11,8 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   const config = new DocumentBuilder()
-    .setTitle('Подача')
-    .setDescription('ПО Подача для отдела ИП')
-    .addBasicAuth({
-      description: 'Введите token в headers',
-      name: 'token',
-      in: 'header',
-      type: 'apiKey',
-    })
+    .setTitle('Стартер-приложение')
+    .setDescription('Стартер-приложение для "Избранных"')
     .build();
   const document = SwaggerModule.createDocument(
     app,

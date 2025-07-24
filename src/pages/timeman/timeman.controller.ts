@@ -1,20 +1,23 @@
-import { Controller, Post } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { TimemanService } from './timeman.service';
-import { AxiosResponse } from 'axios';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiResponse } from 'src/utils/interfaces';
+import { WebhookDto } from './dto/webhook.dto';
 
 @ApiTags('Time manager')
 @Controller('timeman')
 export class TimemanController {
   constructor(private readonly timemanService: TimemanService) {}
 
+  @ApiOperation({ summary: 'Открыть день' })
   @Post('open')
-  async open(): Promise<AxiosResponse> {
-    return await this.timemanService.open();
+  async open(@Body() body: WebhookDto): Promise<ApiResponse> {
+    return await this.timemanService.open(body.webhook);
   }
 
+  @ApiOperation({ summary: 'Закрыть день' })
   @Post('close')
-  async close() {
-    return await this.timemanService.close();
+  async close(@Body() body: WebhookDto): Promise<ApiResponse> {
+    return await this.timemanService.close(body.webhook);
   }
 }
